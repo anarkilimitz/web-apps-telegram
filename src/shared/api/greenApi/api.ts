@@ -1,7 +1,7 @@
 const BASE_URL = 'https://api.green-api.com';
 
 export const greenApi = {
-	// Отправка сообщения
+	// отправка сообщения
 	sendMessage: async (
 		idInstance: string,
 		apiTokenInstance: string,
