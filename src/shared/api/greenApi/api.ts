@@ -21,6 +21,17 @@ export const greenApi = {
 		return response.json();
 	},
 
+	// проверка состояния инстанса (авторизации)
+	getStateInstance: async (idInstance: string, apiTokenInstance: string) => {
+		const url = `${BASE_URL}/waInstance${idInstance}/getStateInstance/${apiTokenInstance}`;
+		const response = await fetch(url, { method: 'GET' });
+
+		if (!response.ok) {
+			throw new Error('Неверные учетные данные');
+		}
+		return response.json();
+	},
+
 	// получение входящего уведомления
 	receiveNotification: async (idInstance: string, apiTokenInstance: string) => {
 		const url = `${BASE_URL}/waInstance${idInstance}/receiveNotification/${apiTokenInstance}`;

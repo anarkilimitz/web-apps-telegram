@@ -1,0 +1,133 @@
+.telegram-chat {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: #efeae2;
+    background-image: radial-gradient(#d2cbc4 0.75px, transparent 0.75px);
+    background-size: 15px 15px;
+    border-left: 1px solid #dfe1e5;
+    border-right: 1px solid #dfe1e5;
+
+    &__messages-container {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    &__empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+
+        &-bubble {
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            color: #707579;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+        }
+    }
+
+    &__input-form {
+        display: flex;
+        align-items: center;
+        padding: 12px 16px;
+        background-color: #ffffff;
+        border-top: 1px solid #e0e0e0;
+        gap: 10px;
+    }
+
+    &__input {
+        flex: 1;
+        padding: 10px 16px;
+        background-color: #f4f4f5;
+        border: none;
+        border-radius: 20px;
+        font-size: 14px;
+        outline: none;
+        color: #222;
+
+        &::placeholder {
+            color: #999999;
+        }
+    }
+
+    &__send-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #2481cc;
+        color: #ffffff;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+
+        &:hover:not(:disabled) {
+            background-color: #1a6cb0;
+        }
+
+        &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    }
+}
+
+.tg-message {
+    display: flex;
+    max-width: 65%;
+
+    &--out {
+        align-self: flex-end;
+
+        .tg-message__bubble {
+            background-color: #eeffde;
+            border-radius: 12px 12px 2px 12px;
+            color: #111111;
+        }
+    }
+
+    &--in {
+        align-self: flex-start;
+
+        .tg-message__bubble {
+            background-color: #ffffff;
+            border-radius: 12px 12px 12px 2px;
+            color: #111111;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+    }
+
+    &__bubble {
+        padding: 8px 12px 6px 12px;
+        font-size: 14px;
+        line-height: 1.4;
+        word-break: break-word;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    &__text {
+        padding-right: 35px;
+    }
+
+    &__time {
+        align-self: flex-end;
+        font-size: 10px;
+        color: #8c939d;
+        margin-bottom: -2px;
+    }
+}

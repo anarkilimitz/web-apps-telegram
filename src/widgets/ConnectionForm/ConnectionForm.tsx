@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { FC, SyntheticEvent } from 'react';
+import { greenApi } from '../../shared/api/greenApi/api';
 
 import './ConnectionForm.scss';
 
@@ -11,8 +12,9 @@ export const ConnectionForm: FC<ConnectionFormProps> = ({ onConnect }) => {
 	const [idInstance, setIdInstance] = useState<string>('');
 	const [apiTokenInstance, setApiTokenInstance] = useState<string>('');
 	const [error, setError] = useState<string | null>(null);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
-	const handleSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
+	const handleSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
 		const trimmedId = idInstance.trim();
@@ -23,8 +25,20 @@ export const ConnectionForm: FC<ConnectionFormProps> = ({ onConnect }) => {
 			return;
 		}
 
-		setError(null);
-		onConnect(trimmedId, trimmedToken);
+		try {
+			setIsLoading(true);
+			setError(null);
+
+			// проверяем существование и валидность инстанса в GREEN-API
+			await greenApi.getStateInstance(trimmedId, trimmedToken);
+
+			onConnect(trimmedId, trimmedToken);
+		} catch (err) {
+			console.error(err);
+			setError('Неверный idInstance или apiTokenInstance');
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	return (
@@ -45,6 +59,7 @@ export const ConnectionForm: FC<ConnectionFormProps> = ({ onConnect }) => {
 							className="connection-form__input"
 							placeholder="Например: 1101800000"
 							value={idInstance}
+							autoComplete="off"
 							onChange={(e) => setIdInstance(e.target.value)}
 						/>
 					</div>
@@ -62,8 +77,12 @@ export const ConnectionForm: FC<ConnectionFormProps> = ({ onConnect }) => {
 
 					{error ? <div className="connection-form__error">{error}</div> : null}
 
-					<button type="submit" className="connection-form__button">
-						Подключиться
+					<button
+						type="submit"
+						className="connection-form__button"
+						disabled={isLoading}
+					>
+						{isLoading ? 'Проверка...' : 'Подключиться'}
 					</button>
 				</form>
 			</div>
