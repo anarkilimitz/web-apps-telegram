@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
-    max-width: 900px;
+    max-width: 500px;
     margin: 0 auto;
     background-color: #efeae2;
     background-image: radial-gradient(#d2cbc4 0.75px, transparent 0.75px);
@@ -129,5 +129,11 @@
         font-size: 10px;
         color: #8c939d;
         margin-bottom: -2px;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .telegram-chat {
+        margin: auto 10px;
     }
 }
