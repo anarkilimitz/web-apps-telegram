@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import type { FC } from 'react';
-import { ConnectionForm } from './widgets/ConnectionForm/ConnectionForm';
-import { ChatSelector } from './widgets/ChatSelector/ChatSelector';
-import { ChatWindow } from './widgets/ChatWindow/ChatWindow';
+import { ConnectionForm } from '../widgets/ConnectionForm/ConnectionForm';
+import { ChatSelector } from '../widgets/ChatSelector/ChatSelector';
+import { ChatWindow } from '../widgets/ChatWindow/ChatWindow';
 
-import '../src/app/styles/global.scss';
+import '../app/styles/global.scss';
 
 export const App: FC = () => {
 	// состояние авторизации
