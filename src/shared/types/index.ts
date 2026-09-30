@@ -9,7 +9,7 @@ export interface IMessage {
 	idMessage: string;
 	text: string;
 	sender: 'outgoing' | 'incoming';
-	timestamp?: number;
+	timestamp: number;
 }
 
 // данные для отправки текстового сообщения
@@ -21,6 +21,11 @@ export interface ISendMessageRequest {
 // ответ при успешной отправке сообщения
 export interface ISendMessageResponse {
 	idMessage: string;
+}
+
+// ответ при проверке состояния инстанса
+export interface IGetStateInstanceResponse {
+    stateInstance: string;
 }
 
 // структура входящего уведомления от GREEN-API (ReceiveNotification)
@@ -49,12 +54,8 @@ export interface IWebhookNotification {
 	};
 }
 
-// состояние чата
-export interface IChatState {
-	credentials: IGreenApiCredentials | null;
-	chatId: string;
-	messages: IMessage[];
-	isConnected: boolean;
-	isLoading: boolean;
-	error: string | null;
+// ответ при удалении уведомления
+export interface IDeleteNotificationResponse {
+    result: boolean;
+    reason?: string;
 }
