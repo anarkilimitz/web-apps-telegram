@@ -37,7 +37,9 @@ export const ChatSelector: FC<ChatSelectorProps> = ({
 				<h2 className="chat-selector__title">Начать чат</h2>
 
 				<p className="chat-selector__subtitle">
-					Введите номер телефона собеседника (с кодом страны, без плюса)
+					Введите номер телефона собеседника
+					<br />
+					(с кодом страны, <span>без плюса</span>)
 				</p>
 
 				<form onSubmit={handleStartChat} className="chat-selector__form">

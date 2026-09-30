@@ -60,3 +60,13 @@ button {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--main-hover-color);
 }
+
+::selection {
+    background-color: var(--main-color);
+    color: #fff;
+}
+
+::-moz-selection {
+    background-color: var(--main-color);
+    color: #fff;
+}

@@ -51,10 +51,14 @@ export const ConnectionForm: FC<ConnectionFormProps> = ({ onConnect }) => {
 		<div className="connection-form-wrapper">
 			<div className="connection-form-card">
 				<div className="connection-form__header">
-					<h2 className="connection-form__title">Авторизация GREEN-API</h2>
+					<h2 className="connection-form__title">
+						Авторизация <span>GREEN-API</span>
+					</h2>
 
 					<p className="connection-form__subtitle">
-						Введите учетные данные вашего инстанса для работы с чатом
+						Введите учетные данные вашего инстанса
+						<br />
+						для работы с чатом
 					</p>
 				</div>
 

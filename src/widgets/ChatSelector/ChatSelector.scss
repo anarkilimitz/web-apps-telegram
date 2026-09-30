@@ -17,16 +17,23 @@
 
 .chat-selector {
     &__title {
+        text-align: center;
         margin-bottom: 10px;
         font-size: 20px;
         color: var(--text-dark-color);
     }
 
     &__subtitle {
+        text-align: center;
         margin-bottom: 20px;
         font-size: 13px;
         opacity: 0.65;
         color: var(--text-dark-color);
+
+        span {
+            font-weight: 700;
+            text-transform: uppercase;
+        }
     }
 
     &__form {

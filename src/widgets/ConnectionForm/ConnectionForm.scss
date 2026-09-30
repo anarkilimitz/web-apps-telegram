@@ -31,6 +31,9 @@
         font-weight: 700;
         color: var(--text-dark-color);
         margin-bottom: 6px;
+        span {
+            color: var(--main-hover-color);
+        }
     }
 
     &__subtitle {
