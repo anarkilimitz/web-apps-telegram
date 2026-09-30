@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import type { FC, SyntheticEvent } from 'react';
+
+import type { FC, SyntheticEvent, ChangeEvent } from 'react';
 
 import './ChatSelector.scss';
 
@@ -14,20 +15,27 @@ export const ChatSelector: FC<ChatSelectorProps> = ({
 }) => {
 	const [phoneInput, setPhoneInput] = useState<string>('');
 
+	const handlePhoneChange = (e: ChangeEvent<HTMLInputElement>) => {
+		const phone = e.target.value.replace(/\D/g, '').slice(0, 11);
+
+		setPhoneInput(phone);
+	};
+
 	const handleStartChat = (e: SyntheticEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const phone = phoneInput.trim().replace(/\D/g, ''); // только цифры
-		if (!phone) {
-			alert('Введите корректный номер телефона');
+
+		if (phoneInput.length !== 11) {
 			return;
 		}
-		onSelectChat(`${phone}@c.us`);
+
+		onSelectChat(`${phoneInput}@c.us`);
 	};
 
 	return (
 		<div className="chat-selector-wrapper">
 			<div className="chat-selector-card">
 				<h2 className="chat-selector__title">Начать чат</h2>
+
 				<p className="chat-selector__subtitle">
 					Введите номер телефона собеседника (с кодом страны, без плюса)
 				</p>
@@ -38,11 +46,25 @@ export const ChatSelector: FC<ChatSelectorProps> = ({
 						className="chat-selector__input"
 						placeholder="Например: 79991234567"
 						value={phoneInput}
-						onChange={(e) => setPhoneInput(e.target.value)}
+						onChange={handlePhoneChange}
+						inputMode="numeric"
+						maxLength={11}
 					/>
-					<button type="submit" className="chat-selector__submit-btn">
+
+					{phoneInput.length > 0 && phoneInput.length < 11 && (
+						<div className="chat-selector__hint">
+							Номер телефона должен содержать 11 цифр
+						</div>
+					)}
+
+					<button
+						type="submit"
+						className="chat-selector__submit-btn"
+						disabled={phoneInput.length !== 11}
+					>
 						Открыть чат
 					</button>
+
 					<button
 						type="button"
 						className="chat-selector__back-btn"
