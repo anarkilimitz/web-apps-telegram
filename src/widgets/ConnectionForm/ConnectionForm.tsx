@@ -1,11 +1,14 @@
 import { useState } from 'react';
+
 import type { FC, SyntheticEvent } from 'react';
+import type { IGreenApiCredentials } from '../../shared/types';
+
 import { greenApi } from '../../shared/api/greenApi/api';
 
 import './ConnectionForm.scss';
 
 interface ConnectionFormProps {
-	onConnect: (idInstance: string, apiTokenInstance: string) => void;
+	onConnect: (credentials: IGreenApiCredentials) => void;
 }
 
 export const ConnectionForm: FC<ConnectionFormProps> = ({ onConnect }) => {
@@ -32,7 +35,10 @@ export const ConnectionForm: FC<ConnectionFormProps> = ({ onConnect }) => {
 			// проверяем существование и валидность инстанса в GREEN-API
 			await greenApi.getStateInstance(trimmedId, trimmedToken);
 
-			onConnect(trimmedId, trimmedToken);
+			onConnect({
+				idInstance: trimmedId,
+				apiTokenInstance: trimmedToken,
+			});
 		} catch (err) {
 			console.error(err);
 			setError('Неверный idInstance или apiTokenInstance');
@@ -46,6 +52,7 @@ export const ConnectionForm: FC<ConnectionFormProps> = ({ onConnect }) => {
 			<div className="connection-form-card">
 				<div className="connection-form__header">
 					<h2 className="connection-form__title">Авторизация GREEN-API</h2>
+
 					<p className="connection-form__subtitle">
 						Введите учетные данные вашего инстанса для работы с чатом
 					</p>
@@ -54,6 +61,7 @@ export const ConnectionForm: FC<ConnectionFormProps> = ({ onConnect }) => {
 				<form onSubmit={handleSubmit} className="connection-form">
 					<div className="connection-form__field">
 						<label className="connection-form__label">idInstance</label>
+
 						<input
 							type="text"
 							className="connection-form__input"
@@ -66,6 +74,7 @@ export const ConnectionForm: FC<ConnectionFormProps> = ({ onConnect }) => {
 
 					<div className="connection-form__field">
 						<label className="connection-form__label">apiTokenInstance</label>
+
 						<input
 							type="password"
 							className="connection-form__input"

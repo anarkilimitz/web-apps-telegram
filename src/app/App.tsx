@@ -1,9 +1,11 @@
 import { useState } from 'react';
+
 import type { FC } from 'react';
+import type { IGreenApiCredentials } from '../shared/types';
+
 import { ConnectionForm } from '../widgets/ConnectionForm/ConnectionForm';
 import { ChatSelector } from '../widgets/ChatSelector/ChatSelector';
 import { ChatWindow } from '../widgets/ChatWindow/ChatWindow';
-import type { IGreenApiCredentials } from '../shared/types';
 
 import '../app/styles/global.scss';
 
@@ -16,8 +18,8 @@ export const App: FC = () => {
 	const [isChatSelected, setIsChatSelected] = useState<boolean>(false);
 
 	// обработчик успешного подключения из ConnectionForm
-	const handleConnect = (idInstance: string, apiTokenInstance: string) => {
-		setCredentials({ idInstance, apiTokenInstance });
+	const handleConnect = (credentials: IGreenApiCredentials) => {
+		setCredentials(credentials);
 	};
 
 	// вход / смена аккаунта

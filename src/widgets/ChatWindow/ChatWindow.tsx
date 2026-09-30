@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
+
 import type { FC, SyntheticEvent } from 'react';
+import type { IMessage } from '../../shared/types';
+
 import { greenApi } from '../../shared/api/greenApi/api';
 
 import { ChatHeader } from '../ChatHeader/ChatHeader';
+
 import './ChatWindow.scss';
 
 interface ChatWindowProps {
@@ -12,27 +16,15 @@ interface ChatWindowProps {
 	onLogout: () => void;
 }
 
-interface IMessageItem {
-	id: string;
-	text: string;
-	sender: 'me' | 'incoming';
-	time: string;
-}
-
 export const ChatWindow: FC<ChatWindowProps> = ({
 	idInstance,
 	apiTokenInstance,
 	chatId,
 	onLogout,
 }) => {
-	const [messages, setMessages] = useState<IMessageItem[]>([]);
+	const [messages, setMessages] = useState<IMessage[]>([]);
 	const [inputText, setInputText] = useState<string>('');
 	const [loading, setLoading] = useState<boolean>(false);
-
-	const getCurrentTime = () => {
-		const now = new Date();
-		return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-	};
 
 	// фоновый опрос входящих сообщений (Polling)
 	useEffect(() => {
@@ -51,23 +43,29 @@ export const ChatWindow: FC<ChatWindowProps> = ({
 
 				// проверка что это входящее текстовое сообщение
 				if (
-					body &&
 					body.typeWebhook === 'incomingMessageReceived' &&
 					body.messageData &&
 					body.messageData.typeMessage === 'textMessage'
 				) {
 					const senderChatId = body.senderData?.chatId;
 					const text = body.messageData.textMessageData?.textMessage;
+					const messageId = body.idMessage;
+					const timestamp = body.timestamp;
 
 					// если сообщение относится к активному чату
-					if (senderChatId === chatId && text) {
+					if (
+						senderChatId === chatId &&
+						text &&
+						messageId &&
+						timestamp !== undefined
+					) {
 						setMessages((prev) => [
 							...prev,
 							{
-								id: receiptId.toString(),
+								idMessage: messageId,
 								text,
 								sender: 'incoming',
-								time: getCurrentTime(),
+								timestamp,
 							},
 						]);
 					}
@@ -97,13 +95,15 @@ export const ChatWindow: FC<ChatWindowProps> = ({
 
 	const handleSendMessage = async (e: SyntheticEvent<HTMLFormElement>) => {
 		e.preventDefault();
+
 		const trimmedText = inputText.trim();
 
 		if (!trimmedText || loading) return;
 
 		try {
 			setLoading(true);
-			await greenApi.sendMessage(
+
+			const response = await greenApi.sendMessage(
 				idInstance,
 				apiTokenInstance,
 				chatId,
@@ -113,12 +113,13 @@ export const ChatWindow: FC<ChatWindowProps> = ({
 			setMessages((prev) => [
 				...prev,
 				{
-					id: Date.now().toString(),
+					idMessage: response.idMessage,
 					text: trimmedText,
-					sender: 'me',
-					time: getCurrentTime(),
+					sender: 'outgoing',
+					timestamp: Date.now(),
 				},
 			]);
+
 			setInputText('');
 		} catch (error) {
 			console.error(error);
@@ -142,14 +143,20 @@ export const ChatWindow: FC<ChatWindowProps> = ({
 				) : (
 					messages.map((msg) => (
 						<div
-							key={msg.id}
+							key={msg.idMessage}
 							className={`tg-message ${
-								msg.sender === 'me' ? 'tg-message--out' : 'tg-message--in'
+								msg.sender === 'outgoing' ? 'tg-message--out' : 'tg-message--in'
 							}`}
 						>
 							<div className="tg-message__bubble">
 								<span className="tg-message__text">{msg.text}</span>
-								<span className="tg-message__time">{msg.time}</span>
+
+								<span className="tg-message__time">
+									{new Date(msg.timestamp).toLocaleTimeString([], {
+										hour: '2-digit',
+										minute: '2-digit',
+									})}
+								</span>
 							</div>
 						</div>
 					))
@@ -164,6 +171,7 @@ export const ChatWindow: FC<ChatWindowProps> = ({
 					value={inputText}
 					onChange={(e) => setInputText(e.target.value)}
 				/>
+
 				<button
 					type="submit"
 					className="telegram-chat__send-btn"
