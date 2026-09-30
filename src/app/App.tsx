@@ -3,15 +3,13 @@ import type { FC } from 'react';
 import { ConnectionForm } from '../widgets/ConnectionForm/ConnectionForm';
 import { ChatSelector } from '../widgets/ChatSelector/ChatSelector';
 import { ChatWindow } from '../widgets/ChatWindow/ChatWindow';
+import type { IGreenApiCredentials } from '../shared/types';
 
 import '../app/styles/global.scss';
 
 export const App: FC = () => {
 	// состояние авторизации
-	const [credentials, setCredentials] = useState<{
-		idInstance: string;
-		apiTokenInstance: string;
-	} | null>(null);
+	const [credentials, setCredentials] = useState<IGreenApiCredentials | null>(null);
 
 	// состояние выбранного чата (номер телефона собеседника)
 	const [chatId, setChatId] = useState<string>('');
